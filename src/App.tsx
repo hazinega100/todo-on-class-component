@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import {useSelector} from "react-redux";
+import {AppStoreType} from "./state/store";
+import {TodolistType} from "./state/reducers/todolist-reducer";
+import Todolist from "./components/Todolist";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const todolists = useSelector<AppStoreType, TodolistType[]>(state => state.todolist)
+    return (
+        <div className="App">
+            {
+                todolists.map(tl => {
+                    return <Todolist id={tl.id}
+                                     title={tl.title}
+                                     filter={tl.filter}
+                    />
+                })
+            }
+        </div>
+    );
 }
 
 export default App;
