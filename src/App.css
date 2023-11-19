@@ -1,3 +1,26 @@
 .App {
   text-align: center;
+  margin: 0 auto;
+  width: 1220px;
+}
+
+.todo_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.todolist {
+  margin: 10px;
+  min-width: 200px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid gray;
+}
+
+.btn_wrapper {
+  width: 200px;
+  display: flex;
+  justify-content: space-between;
 }

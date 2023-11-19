@@ -1,21 +1,30 @@
 import "./App.css";
-import {useSelector} from "react-redux";
-import {AppStoreType} from "./state/store";
-import {TodolistType} from "./state/reducers/todolist-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatchThunkType, AppStoreType} from "./state/store";
+import {getTodolistTC, TodolistsType} from "./state/reducers/todolist-reducer";
 import Todolist from "./components/Todolist";
+import {useEffect} from "react";
 
-function App() {
-    const todolists = useSelector<AppStoreType, TodolistType[]>(state => state.todolist)
+const App = () => {
+    const dispatch = useDispatch<AppDispatchThunkType>()
+    const todolists = useSelector<AppStoreType, TodolistsType[]>(state => state.todolist)
+    useEffect(() => {
+        dispatch(getTodolistTC())
+    }, [])
     return (
         <div className="App">
-            {
-                todolists.map(tl => {
-                    return <Todolist id={tl.id}
-                                     title={tl.title}
-                                     filter={tl.filter}
-                    />
-                })
-            }
+            <h1>TodoLists</h1>
+            <div className='todo_wrapper'>
+                {
+                    todolists.map((tl, index) => {
+                        return <Todolist key={`${tl.id}_${index}`}
+                                         id={tl.id}
+                                         title={tl.title}
+                                         filter={tl.filter}
+                        />
+                    })
+                }
+            </div>
         </div>
     );
 }
