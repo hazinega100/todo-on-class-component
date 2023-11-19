@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {AppDispatchThunkType, AppStoreType} from "../state/store";
-import {TaskType} from "../state/reducers/tasks-reducer";
+import {AppDispatchThunkType, AppStoreType} from "../../state/store";
+import {TaskType} from "../../state/reducers/tasks-reducer";
+import style from "./Task.module.css"
 
 type PropsType = {
     tasks: TaskType[]
@@ -18,7 +19,7 @@ class Task extends Component<PropsType, any> {
                     this.props.tasks.map(t => {
                         return (
                             <ul key={t.id}>
-                                <li>{t.title}</li><button>x</button>
+                                <li className={style.task}>{t.title} <input type="checkbox" /> <button>x</button></li>
                             </ul>
                         )
                     })

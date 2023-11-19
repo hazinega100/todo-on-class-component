@@ -2,7 +2,7 @@ import "./App.css";
 import {useDispatch, useSelector} from "react-redux";
 import {AppDispatchThunkType, AppStoreType} from "./state/store";
 import {getTodolistTC, TodolistsType} from "./state/reducers/todolist-reducer";
-import Todolist from "./components/Todolist";
+import Todolist from "./components/Todolist/Todolist";
 import {useEffect} from "react";
 
 const App = () => {

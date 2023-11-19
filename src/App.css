@@ -18,9 +18,3 @@
   padding: 5px;
   border: 1px solid gray;
 }
-
-.btn_wrapper {
-  width: 200px;
-  display: flex;
-  justify-content: space-between;
-}
