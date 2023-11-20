@@ -26,7 +26,7 @@ class Todolist extends Component<PropsType, any> {
                 <h3>{this.props.title}
                     <button onClick={deleteTodolist}>x</button>
                 </h3>
-                <AddItemForm/>
+                <AddItemForm addItem={() => {}}/>
                 <div className="btn_wrapper">
                     <TasksContainer {...this.props} tasks={tasksForTodolist} todolistId={this.props.id}/>
                     <button className={style.btn}>All</button>

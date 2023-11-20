@@ -3,10 +3,12 @@ import {todolistReducer} from "./reducers/todolist-reducer";
 import thunk from "redux-thunk";
 import {ThunkDispatch} from "redux-thunk/src/types";
 import {tasksReducer} from "./reducers/tasks-reducer";
+import {appReducer} from "./reducers/app-reducer";
 
 const rootReducer = combineReducers({
     todolist: todolistReducer,
-    tasks: tasksReducer
+    tasks: tasksReducer,
+    app: appReducer
 })
 
 export type AppStoreType = ReturnType<typeof rootReducer>

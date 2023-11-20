@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {tasksApi} from "../../api/tasksApi";
-import {GetTodolist} from "./todolist-reducer";
+import {ADD_TODOLIST, AddTodolist, GET_TODOLISTS, GetTodolist} from "./todolist-reducer";
 
 const initState: TasksStateType = {}
 
@@ -8,10 +8,16 @@ const GET_TASKS = 'GET_TASKS'
 
 export const tasksReducer = (state = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
-        case "GET_TODOLISTS": {
+        case GET_TODOLISTS: {
             const copyState = {...state}
             action.todolists.forEach(tl => copyState[tl.id] = [])
             return copyState
+        }
+        case ADD_TODOLIST: {
+            return {
+                ...state,
+                [action.todolist.id]: []
+            }
         }
         case GET_TASKS: {
             return {
@@ -52,4 +58,4 @@ export type TasksStateType = {
 }
 
 type GetTasksType = ReturnType<typeof getTasksAC>
-type ActionType = GetTasksType | GetTodolist
+type ActionType = GetTasksType | GetTodolist | AddTodolist
