@@ -1,23 +1,24 @@
 import React, {Component} from "react";
 import {FilterType, removeTodolistTC} from "../../state/reducers/todolist-reducer";
 import {connect} from "react-redux";
-import {AppDispatchThunkType, AppStoreType} from "../../state/store";
+import {AppStoreType} from "../../state/store";
 import style from "./Todolist.module.css"
 import {TasksStateType} from "../../state/reducers/tasks-reducer";
 import TasksContainer from "../Task/TasksContainer";
+import AddItemForm from "../AddItemForm/AddItemForm";
 
 type PropsType = {
     id: string
     title: string
     filter: FilterType
     tasks: TasksStateType
-    deleteTodolist: (todolistId: string) => void
+    removeTodolistTC: (todolistId: string) => void
 }
 
 class Todolist extends Component<PropsType, any> {
     render() {
         const deleteTodolist = () => {
-            this.props.deleteTodolist(this.props.id)
+            this.props.removeTodolistTC(this.props.id)
         }
         let tasksForTodolist = this.props.tasks[this.props.id]
         return (
@@ -25,6 +26,7 @@ class Todolist extends Component<PropsType, any> {
                 <h3>{this.props.title}
                     <button onClick={deleteTodolist}>x</button>
                 </h3>
+                <AddItemForm/>
                 <div className="btn_wrapper">
                     <TasksContainer {...this.props} tasks={tasksForTodolist} todolistId={this.props.id}/>
                     <button className={style.btn}>All</button>
@@ -42,12 +44,12 @@ const mapStateToProps = (state: AppStoreType) => {
     }
 }
 
-const mapDispatchToProps = (dispatch: AppDispatchThunkType) => {
-    return {
-        deleteTodolist(todolistId: string) {
-            dispatch(removeTodolistTC(todolistId))
-        }
-    }
-}
+// const mapDispatchToProps = (dispatch: AppDispatchThunkType) => {
+//     return {
+//         deleteTodolist(todolistId: string) {
+//             dispatch(removeTodolist(todolistId))
+//         }
+//     }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Todolist);
+export default connect(mapStateToProps, {removeTodolistTC})(Todolist);

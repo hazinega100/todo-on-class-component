@@ -4,6 +4,7 @@ import {AppDispatchThunkType, AppStoreType} from "./state/store";
 import {getTodolistTC, TodolistsType} from "./state/reducers/todolist-reducer";
 import Todolist from "./components/Todolist/Todolist";
 import {useEffect} from "react";
+import AddItemForm from "./components/AddItemForm/AddItemForm";
 
 const App = () => {
     const dispatch = useDispatch<AppDispatchThunkType>()
@@ -14,6 +15,7 @@ const App = () => {
     return (
         <div className="App">
             <h1>TodoLists</h1>
+            <AddItemForm/>
             <div className='todo_wrapper'>
                 {
                     todolists.map(tl => {
