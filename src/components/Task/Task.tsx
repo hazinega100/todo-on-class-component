@@ -1,46 +1,29 @@
 import React, {Component} from "react";
-import {connect} from "react-redux";
-import {AppDispatchThunkType, AppStoreType} from "../../state/store";
 import {TaskType} from "../../state/reducers/tasks-reducer";
 import style from "./Task.module.css"
 
 type PropsType = {
-    tasks: TaskType[]
+    task: TaskType
+    removeTask: (id: string) => void
 }
 
 class Task extends Component<PropsType, any> {
-    componentDidMount() {
-    }
-
     render() {
+        const {task, removeTask} = this.props
+
+        const onRemoveTask = () => {
+            removeTask(task.id)
+        }
         return (
             <div className='task'>
-                {
-                    this.props.tasks.map(t => {
-                        return (
-                            <ul key={t.id}>
-                                <li className={style.task}>{t.title} <input type="checkbox" /> <button>x</button></li>
-                            </ul>
-                        )
-                    })
-                }
+                <span className={style.task}>
+                    {this.props.task.title}
+                    <input type="checkbox"/>
+                    <button onClick={onRemoveTask}>x</button>
+                </span>
             </div>
         );
     }
 }
 
-const mapStateToProps = (state: AppStoreType) => {
-    return {
-        tasks: state.tasks
-    }
-}
-
-const mapDispatchToProps = (dispatch: AppDispatchThunkType) => {
-    return {
-        getTasks() {
-
-        }
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Task);
+export default Task;

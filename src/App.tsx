@@ -16,8 +16,8 @@ const App = () => {
             <h1>TodoLists</h1>
             <div className='todo_wrapper'>
                 {
-                    todolists.map((tl, index) => {
-                        return <Todolist key={`${tl.id}_${index}`}
+                    todolists.map(tl => {
+                        return <Todolist key={tl.id}
                                          id={tl.id}
                                          title={tl.title}
                                          filter={tl.filter}

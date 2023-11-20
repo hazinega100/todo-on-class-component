@@ -1,31 +1,32 @@
 import React, {Component} from "react";
-import {FilterType} from "../../state/reducers/todolist-reducer";
+import {FilterType, removeTodolistTC} from "../../state/reducers/todolist-reducer";
 import {connect} from "react-redux";
 import {AppDispatchThunkType, AppStoreType} from "../../state/store";
-import Task from "../Task/Task";
 import style from "./Todolist.module.css"
+import {TasksStateType} from "../../state/reducers/tasks-reducer";
+import TasksContainer from "../Task/TasksContainer";
 
 type PropsType = {
     id: string
     title: string
     filter: FilterType
+    tasks: TasksStateType
+    deleteTodolist: (todolistId: string) => void
 }
 
 class Todolist extends Component<PropsType, any> {
-    componentDidMount() {
-    }
-
     render() {
         const deleteTodolist = () => {
-
+            this.props.deleteTodolist(this.props.id)
         }
+        let tasksForTodolist = this.props.tasks[this.props.id]
         return (
             <div className="todolist">
                 <h3>{this.props.title}
                     <button onClick={deleteTodolist}>x</button>
                 </h3>
                 <div className="btn_wrapper">
-                    <Task />
+                    <TasksContainer {...this.props} tasks={tasksForTodolist} todolistId={this.props.id}/>
                     <button className={style.btn}>All</button>
                     <button className={style.btn}>Complete</button>
                     <button className={style.btn}>Active</button>
@@ -43,8 +44,8 @@ const mapStateToProps = (state: AppStoreType) => {
 
 const mapDispatchToProps = (dispatch: AppDispatchThunkType) => {
     return {
-        getTasks() {
-
+        deleteTodolist(todolistId: string) {
+            dispatch(removeTodolistTC(todolistId))
         }
     }
 }

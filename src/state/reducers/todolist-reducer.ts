@@ -6,12 +6,16 @@ const initState: TodolistsType[] = [
     // {id: '2', title: 'What to buy', filter: 'all'},
 ]
 
-const GET_TODOLISTS = 'GET-TODOLISTS'
+const GET_TODOLISTS = 'GET_TODOLISTS'
+const REMOVE_TODOLISTS = 'REMOVE_TODOLISTS'
 
 export const todolistReducer = (state = initState, action: ActionType): TodolistsType[] => {
     switch (action.type) {
         case GET_TODOLISTS: {
             return [...state, ...action.todolists]
+        }
+        case "REMOVE_TODOLISTS": {
+            return state.filter(tl => tl.id !== action.todolistId)
         }
         default: {
             return state
@@ -26,11 +30,24 @@ const getTodolistAC = (todolists: TodolistsType[]) => {
         todolists
     } as const
 }
+const removeTodolistAC = (todolistId: string) => {
+    return {
+        type: REMOVE_TODOLISTS,
+        todolistId
+    } as const
+}
 // Thunk
 export const getTodolistTC = () => (dispatch: Dispatch) => {
     todolistApi.getTodolists()
         .then(res => {
             dispatch(getTodolistAC(res.data))
+        })
+}
+
+export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch) => {
+    todolistApi.deleteTodolists(todolistId)
+        .then(res => {
+            dispatch(removeTodolistAC(todolistId))
         })
 }
 
@@ -46,5 +63,6 @@ export type TodolistsResponseType = {
 
 export type TodolistsType = TodolistsResponseType & { filter: FilterType }
 
-type GetTodolist = ReturnType<typeof getTodolistAC>
-type ActionType = GetTodolist
+export type GetTodolist = ReturnType<typeof getTodolistAC>
+export type RemoveTodolistType = ReturnType<typeof removeTodolistAC>
+type ActionType = GetTodolist | RemoveTodolistType

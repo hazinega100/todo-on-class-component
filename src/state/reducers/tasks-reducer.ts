@@ -1,17 +1,23 @@
 import {Dispatch} from "redux";
 import {tasksApi} from "../../api/tasksApi";
+import {GetTodolist} from "./todolist-reducer";
 
-const initState: TaskType[] = [
-    {id: '1', title: 'HTML'},
-    {id: '2', title: 'JS'},
-]
+const initState: TasksStateType = {}
 
 const GET_TASKS = 'GET_TASKS'
 
-export const tasksReducer = (state = initState, action: ActionType): TaskType[] => {
+export const tasksReducer = (state = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
+        case "GET_TODOLISTS": {
+            const copyState = {...state}
+            action.todolists.forEach(tl => copyState[tl.id] = [])
+            return copyState
+        }
         case GET_TASKS: {
-            return state
+            return {
+                ...state,
+                [action.todolistId]: action.tasks
+            }
         }
         default: {
             return state
@@ -41,5 +47,9 @@ export type TaskType = {
     title: string
 }
 
+export type TasksStateType = {
+    [key: string]: TaskType[]
+}
+
 type GetTasksType = ReturnType<typeof getTasksAC>
-type ActionType = GetTasksType
+type ActionType = GetTasksType | GetTodolist
