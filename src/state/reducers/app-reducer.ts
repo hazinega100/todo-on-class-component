@@ -1,5 +1,6 @@
-const initState: InitStateType = {
-    status: 'idle'
+const initState: AppReducerType = {
+    status: 'idle',
+    messages: []
 }
 
 export const appReducer = (state = initState, action: ActionType) => {
@@ -8,6 +9,12 @@ export const appReducer = (state = initState, action: ActionType) => {
             return {
                 ...state,
                 status: action.status
+            }
+        }
+        case "SET_MESSAGES": {
+            return {
+                ...state,
+                messages: action.messages[0]
             }
         }
         default: {
@@ -23,13 +30,22 @@ export const setStatusAC = (status: StatusType) => {
         status
     } as const
 }
+export const setMessagesAC = (messages: string[]) => {
+    return {
+        type: 'SET_MESSAGES',
+        messages
+    } as const
+}
 
 // Type
 export type StatusType = 'idle' | 'success' | 'loading' | 'error'
 
-type InitStateType = {
+export type AppReducerType = {
     status: StatusType
+    messages: string[]
 }
 
 type SetStatusType = ReturnType<typeof setStatusAC>
-type ActionType = SetStatusType
+export type SetMessagesType = ReturnType<typeof setMessagesAC>
+
+type ActionType = SetStatusType | SetMessagesType

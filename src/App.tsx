@@ -5,20 +5,20 @@ import {addTodolistTC, getTodolistTC, TodolistsType} from "./state/reducers/todo
 import Todolist from "./components/Todolist/Todolist";
 import {useEffect} from "react";
 import AddItemForm from "./components/AddItemForm/AddItemForm";
-import {StatusType} from "./state/reducers/app-reducer";
+import {AppReducerType} from "./state/reducers/app-reducer";
 import Loading from "./components/Loading";
 
 const App = () => {
     const dispatch = useDispatch<AppDispatchThunkType>()
     const todolists = useSelector<AppStoreType, TodolistsType[]>(state => state.todolist)
-    const status = useSelector<AppStoreType, StatusType>(state => state.app.status)
+    const app = useSelector<AppStoreType, AppReducerType>(state => state.app)
     useEffect(() => {
         dispatch(getTodolistTC())
     }, [])
     const addTodolist = (title: string) => {
         dispatch(addTodolistTC(title))
     }
-    if (status === 'loading') {
+    if (app.status === 'loading') {
         return <Loading />
     }
     return (

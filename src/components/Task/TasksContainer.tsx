@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {AppDispatchThunkType} from "../../state/store";
-import {getTasksTC, TaskType} from "../../state/reducers/tasks-reducer";
+import {AppDispatchThunkType, AppStoreType} from "../../state/store";
+import {createTaskTC, getTasksTC, removeTaskTC, TasksStateType} from "../../state/reducers/tasks-reducer";
 import Task from "./Task";
 
 type PropsType = {
-    tasks: TaskType[]
+    tasks: TasksStateType
     todolistId: string
     getTasks: (todolistId: string) => void
+    removeTask: (todolistId: string, taskId: string) => void
 }
 
 class TasksContainer extends Component<PropsType, any> {
@@ -17,13 +18,20 @@ class TasksContainer extends Component<PropsType, any> {
 
     render() {
         const removeTask = (id: string) => {
-            console.log(`removed task: ${id}`)
+            this.props.removeTask(this.props.todolistId, id)
         }
+        let tasksForTodolist = this.props.tasks[this.props.todolistId]
         return (
             <div>
-                {this.props.tasks.map(t => <Task key={t.id} task={t} removeTask={removeTask} />)}
+                {tasksForTodolist.map(t => <Task key={t.id} task={t} removeTask={removeTask} />)}
             </div>
         )
+    }
+}
+
+const mapStateToProps = (state: AppStoreType) => {
+    return {
+        tasks: state.tasks
     }
 }
 
@@ -31,8 +39,14 @@ const mapDispatchToProps = (dispatch: AppDispatchThunkType) => {
     return {
         getTasks(todolistId: string) {
             dispatch(getTasksTC(todolistId))
+        },
+        createTask(todolistId: string, title: string) {
+            dispatch(createTaskTC(todolistId, title))
+        },
+        removeTask(todolistId: string, taskId: string) {
+            dispatch(removeTaskTC(todolistId, taskId))
         }
     }
 }
 
-export default connect(null, mapDispatchToProps)(TasksContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TasksContainer);

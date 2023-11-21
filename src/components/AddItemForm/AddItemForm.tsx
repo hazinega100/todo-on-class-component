@@ -1,7 +1,6 @@
 import {ChangeEvent, Component} from "react";
 
 type PropsType = {
-    // value: string
     addItem: (value: string) => void
 }
 
@@ -11,12 +10,18 @@ class AddItemForm extends Component<PropsType, any>{
     }
     render() {
         const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+            const value = e.currentTarget.value
             this.setState({
-                title: e.currentTarget.value
+                title: value
             })
         }
         const onClickHandler = () => {
-            this.props.addItem(this.state.title)
+            if (this.state.title !== '') {
+                this.props.addItem(this.state.title.trim())
+            }
+            this.setState({
+                title: ''
+            })
         }
         return (
             <div>
