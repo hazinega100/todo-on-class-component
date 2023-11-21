@@ -8,6 +8,7 @@ const initState: TasksStateType = {}
 const GET_TASKS = 'GET_TASKS'
 const CREATE_TASK = 'CREATE_TASK'
 const REMOVE_TASK = 'REMOVE_TASK'
+const CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS'
 
 export const tasksReducer = (state = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
@@ -40,6 +41,13 @@ export const tasksReducer = (state = initState, action: ActionType): TasksStateT
                 [action.todolistId]: state[action.todolistId].filter(t => t.id !== action.tasksId)
             }
         }
+        case CHANGE_TASK_STATUS: {
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(t => t.id === action.tasksId ? {...t, status: action.status} : t)
+            }
+        }
         default: {
             return state
         }
@@ -68,6 +76,14 @@ const removeTaskAC = (todolistId: string, tasksId: string) => {
         tasksId
     } as const
 }
+const changeTaskStatusAC = (todolistId: string, tasksId: string, status: TaskStatuses) => {
+    return {
+        type: CHANGE_TASK_STATUS,
+        todolistId,
+        tasksId,
+        status
+    } as const
+}
 // Thunk
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     tasksApi.getTasks(todolistId)
@@ -78,7 +94,6 @@ export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
 export const createTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
     tasksApi.createTask(todolistId, title)
         .then(res => {
-            console.log(res.data)
             dispatch(createTaskAC(todolistId, res.data.data.item))
         })
 }
@@ -92,20 +107,43 @@ export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: D
             }
         })
 }
+export const changeTaskStatusTC = (todolistId: string, taskId: string, status: TaskStatuses, title: string) => (dispatch: Dispatch) => {
+    tasksApi.updateTask(todolistId, taskId, status, title)
+        .then(res => {
+            dispatch(changeTaskStatusAC(todolistId, taskId, res.data.data.item.status))
+        })
+}
 
 // Types
 export type TaskType = {
     id: string
     title: string
+    status: number
 }
 
 export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
+export enum TaskStatuses {
+    New = 0,
+    InProgress = 1,
+    Completed = 2,
+    Draft = 3
+}
+
+export enum TaskPriorities {
+    Low = 0,
+    Middle = 1,
+    Hi = 2,
+    Urgently = 3,
+    Later = 4
+}
+
 type GetTasksType = ReturnType<typeof getTasksAC>
 type CreateTasksType = ReturnType<typeof createTaskAC>
 type RemoveTasksType = ReturnType<typeof removeTaskAC>
+type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>
 
 type ActionType =
     | CreateTasksType
@@ -113,3 +151,4 @@ type ActionType =
     | GetTodolist
     | AddTodolist
     | RemoveTasksType
+    | ChangeTaskStatusType

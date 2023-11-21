@@ -1,5 +1,5 @@
 import axios from "axios";
-import {TaskType} from "../state/reducers/tasks-reducer";
+import {TaskStatuses, TaskType} from "../state/reducers/tasks-reducer";
 
 const instance = axios.create({
     baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -15,6 +15,9 @@ export const tasksApi = {
     },
     deleteTask(todolistId: string, taskId: string) {
         return instance.delete<ResponseType<{}>>(`/todo-lists/${todolistId}/tasks/${taskId}`)
+    },
+    updateTask(todolistId: string, taskId: string, status: TaskStatuses, title: string) {
+        return instance.put<ResponseType<{item: TaskType}>>(`/todo-lists/${todolistId}/tasks/${taskId}`, {status: status, title: title})
     }
 }
 
