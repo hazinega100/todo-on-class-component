@@ -5,10 +5,11 @@ import {setMessagesAC} from "./app-reducer";
 
 const initState: TasksStateType = {}
 
-const GET_TASKS = 'GET_TASKS'
-const CREATE_TASK = 'CREATE_TASK'
-const REMOVE_TASK = 'REMOVE_TASK'
-const CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS'
+const GET_TASKS = "GET_TASKS"
+const CREATE_TASK = "CREATE_TASK"
+const REMOVE_TASK = "REMOVE_TASK"
+const CHANGE_TASK_STATUS = "CHANGE_TASK_STATUS"
+const CHANGE_TASK_TITLE = "CHANGE_TASK_TITLE"
 
 export const tasksReducer = (state = initState, action: ActionType): TasksStateType => {
     switch (action.type) {
@@ -48,6 +49,13 @@ export const tasksReducer = (state = initState, action: ActionType): TasksStateT
                     .map(t => t.id === action.tasksId ? {...t, status: action.status} : t)
             }
         }
+        case "CHANGE_TASK_TITLE": {
+            return {
+                ...state,
+                [action.todolistId]: state[action.todolistId]
+                    .map(t => t.id === action.tasksId ? {...t, title: action.title} : t)
+            }
+        }
         default: {
             return state
         }
@@ -84,6 +92,14 @@ const changeTaskStatusAC = (todolistId: string, tasksId: string, status: TaskSta
         status
     } as const
 }
+const changeTaskTitleAC = (todolistId: string, tasksId: string, title: string) => {
+    return {
+        type: CHANGE_TASK_TITLE,
+        todolistId,
+        tasksId,
+        title
+    } as const
+}
 // Thunk
 export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
     tasksApi.getTasks(todolistId)
@@ -111,6 +127,12 @@ export const changeTaskStatusTC = (todolistId: string, taskId: string, status: T
     tasksApi.updateTask(todolistId, taskId, status, title)
         .then(res => {
             dispatch(changeTaskStatusAC(todolistId, taskId, res.data.data.item.status))
+        })
+}
+export const changeTaskTitleTC = (todolistId: string, taskId: string, status: TaskStatuses, title: string) => (dispatch: Dispatch) => {
+    tasksApi.updateTask(todolistId, taskId, status, title)
+        .then(res => {
+            dispatch(changeTaskTitleAC(todolistId, taskId, res.data.data.item.title))
         })
 }
 
@@ -144,6 +166,7 @@ type GetTasksType = ReturnType<typeof getTasksAC>
 type CreateTasksType = ReturnType<typeof createTaskAC>
 type RemoveTasksType = ReturnType<typeof removeTaskAC>
 type ChangeTaskStatusType = ReturnType<typeof changeTaskStatusAC>
+type ChangeTaskTitleType = ReturnType<typeof changeTaskTitleAC>
 
 type ActionType =
     | CreateTasksType
@@ -152,3 +175,4 @@ type ActionType =
     | AddTodolist
     | RemoveTasksType
     | ChangeTaskStatusType
+    | ChangeTaskTitleType

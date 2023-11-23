@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {AppDispatchThunkType, AppStoreType} from "../../state/store";
 import {
-    changeTaskStatusTC,
+    changeTaskStatusTC, changeTaskTitleTC,
     createTaskTC,
     getTasksTC,
     removeTaskTC,
@@ -17,6 +17,7 @@ type PropsType = {
     getTasks: (todolistId: string) => void
     removeTask: (todolistId: string, taskId: string) => void
     changeStatus: (todolistId: string, taskId: string, status: TaskStatuses, title: string) => void
+    changeTitle: (todolistId: string, taskId: string, status: TaskStatuses, title: string) => void
 }
 
 class TasksContainer extends Component<PropsType, any> {
@@ -31,6 +32,9 @@ class TasksContainer extends Component<PropsType, any> {
         const changeTaskStatus = (id: string, status: TaskStatuses, title: string) => {
             this.props.changeStatus(this.props.todolistId, id, status, title)
         }
+        const changeTaskTitle = (id: string, status: TaskStatuses, title: string) => {
+            this.props.changeTitle(this.props.todolistId, id, status, title)
+        }
         let tasksForTodolist = this.props.tasks[this.props.todolistId]
         return (
             <div>
@@ -38,6 +42,7 @@ class TasksContainer extends Component<PropsType, any> {
                                                  task={t}
                                                  removeTask={removeTask}
                                                  changeStatus={changeTaskStatus}
+                                                 changeTaskTitle={changeTaskTitle}
                 />)}
             </div>
         )
@@ -64,6 +69,9 @@ const mapDispatchToProps = (dispatch: AppDispatchThunkType) => {
         },
         changeStatus(todolistId: string, taskId: string, status: TaskStatuses, title: string) {
             dispatch(changeTaskStatusTC(todolistId, taskId, status, title))
+        },
+        changeTitle(todolistId: string, taskId: string, status: TaskStatuses, title: string) {
+            dispatch(changeTaskTitleTC(todolistId, taskId, status, title))
         }
     }
 }

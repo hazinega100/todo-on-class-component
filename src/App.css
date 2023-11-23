@@ -18,3 +18,8 @@
   padding: 5px;
   border: 1px solid gray;
 }
+
+.task {
+  display: flex;
+  justify-content: center;
+}
