@@ -10,10 +10,12 @@ import {
     TaskStatuses
 } from "../../state/reducers/tasks-reducer";
 import Task from "./Task";
+import {FilterType} from "../../state/reducers/todolist-reducer";
 
 type PropsType = {
     tasks: TasksStateType
     todolistId: string
+    filter: FilterType
     getTasks: (todolistId: string) => void
     removeTask: (todolistId: string, taskId: string) => void
     changeStatus: (todolistId: string, taskId: string, status: TaskStatuses, title: string) => void
@@ -36,6 +38,14 @@ class TasksContainer extends Component<PropsType, any> {
             this.props.changeTitle(this.props.todolistId, id, status, title)
         }
         let tasksForTodolist = this.props.tasks[this.props.todolistId]
+
+        // не забывать переприсваивать новое значение переменной tasksForTodolist =
+        if (this.props.filter === 'completed') {
+            tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.Completed)
+        }
+        if (this.props.filter === 'active') {
+            tasksForTodolist = tasksForTodolist.filter(t => t.status === TaskStatuses.New)
+        }
         return (
             <div>
                 {tasksForTodolist.map(t => <Task key={t.id}

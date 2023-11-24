@@ -8,6 +8,7 @@ export const GET_TODOLISTS = 'GET_TODOLISTS'
 export const ADD_TODOLIST = 'ADD_TODOLIST'
 const REMOVE_TODOLIST = 'REMOVE_TODOLIST'
 const CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE'
+const CHANGE_FILTER_TASKS = 'CHANGE_FILTER_TASKS'
 
 export const todolistReducer = (state = initState, action: ActionType): TodolistsType[] => {
     switch (action.type) {
@@ -23,8 +24,11 @@ export const todolistReducer = (state = initState, action: ActionType): Todolist
                 ...state
             ]
         }
-        case "CHANGE_TODOLIST_TITLE": {
+        case CHANGE_TODOLIST_TITLE: {
             return state.map(tl => tl.id === action.todolistId ? {...tl, title: action.title} : tl)
+        }
+        case CHANGE_FILTER_TASKS: {
+            return state.map(tl => tl.id === action.todolistId ? {...tl, filter: action.filter} : tl)
         }
         default: {
             return state
@@ -56,6 +60,13 @@ const changeTodolistTitleAC = (todolistId: string, title: string) => {
         type: CHANGE_TODOLIST_TITLE,
         todolistId,
         title
+    } as const
+}
+export const changeFilterTasksAC = (todolistId: string, filter: FilterType) => {
+    return {
+        type: CHANGE_FILTER_TASKS,
+        todolistId,
+        filter
     } as const
 }
 // Thunk
@@ -111,5 +122,11 @@ export type GetTodolist = ReturnType<typeof getTodolistAC>
 export type AddTodolist = ReturnType<typeof addTodolistAC>
 export type RemoveTodolistType = ReturnType<typeof removeTodolistAC>
 export type ChangeTodolistTitleType = ReturnType<typeof changeTodolistTitleAC>
+export type ChangeFilterTasksType = ReturnType<typeof changeFilterTasksAC>
 
-type ActionType = GetTodolist | RemoveTodolistType | AddTodolist | ChangeTodolistTitleType
+type ActionType =
+    | GetTodolist
+    | RemoveTodolistType
+    | AddTodolist
+    | ChangeTodolistTitleType
+    | ChangeFilterTasksType

@@ -1,5 +1,10 @@
 import React, {Component} from "react";
-import {changeTodolistTitleTC, FilterType, removeTodolistTC} from "../../state/reducers/todolist-reducer";
+import {
+    changeFilterTasksAC,
+    changeTodolistTitleTC,
+    FilterType,
+    removeTodolistTC
+} from "../../state/reducers/todolist-reducer";
 import {connect} from "react-redux";
 import style from "./Todolist.module.css"
 import TasksContainer from "../Task/TasksContainer";
@@ -14,6 +19,7 @@ type PropsType = {
     createTaskTC: (todolistId: string, title: string) => void
     removeTodolistTC: (todolistId: string) => void
     changeTodolistTitleTC: (todolistId: string, title: string) => void
+    changeFilterTasksAC: (todolistId: string, filter: FilterType) => void
 }
 
 class Todolist extends Component<PropsType, any> {
@@ -27,18 +33,28 @@ class Todolist extends Component<PropsType, any> {
         const changeTodolistTitle = (title: string) => {
             this.props.changeTodolistTitleTC(this.props.id, title)
         }
+        const onClickAll = () => {
+            this.props.changeFilterTasksAC(this.props.id, 'all')
+        }
+        const onClickComplete = () => {
+            this.props.changeFilterTasksAC(this.props.id, 'completed')
+        }
+        const onClickActive = () => {
+            this.props.changeFilterTasksAC(this.props.id, 'active')
+        }
+        // console.log(this.props.filter, `title TL: ${this.props.title}`)
         return (
             <div className="todolist">
                 <h3>
-                    <EditableSpan value={this.props.title} onUpdate={changeTodolistTitle} />
+                    <EditableSpan value={this.props.title} onUpdate={changeTodolistTitle}/>
                     <button onClick={deleteTodolist}>x</button>
                 </h3>
-                <AddItemForm addItem={addTask} />
+                <AddItemForm addItem={addTask}/>
                 <div className="btn_wrapper">
-                    <TasksContainer todolistId={this.props.id} />
-                    <button className={style.btn}>All</button>
-                    <button className={style.btn}>Complete</button>
-                    <button className={style.btn}>Active</button>
+                    <TasksContainer todolistId={this.props.id} filter={this.props.filter}/>
+                    <button className={style.btn} onClick={onClickAll}>All</button>
+                    <button className={style.btn} onClick={onClickComplete}>Complete</button>
+                    <button className={style.btn} onClick={onClickActive}>Active</button>
                 </div>
             </div>
         );
@@ -55,4 +71,9 @@ class Todolist extends Component<PropsType, any> {
 //     }
 // }
 
-export default connect(null, {createTaskTC, removeTodolistTC, changeTodolistTitleTC})(Todolist);
+export default connect(null, {
+    createTaskTC,
+    removeTodolistTC,
+    changeTodolistTitleTC,
+    changeFilterTasksAC
+})(Todolist);
