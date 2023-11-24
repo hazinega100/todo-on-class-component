@@ -1,10 +1,11 @@
 import React, {Component} from "react";
-import {FilterType, removeTodolistTC} from "../../state/reducers/todolist-reducer";
+import {changeTodolistTitleTC, FilterType, removeTodolistTC} from "../../state/reducers/todolist-reducer";
 import {connect} from "react-redux";
 import style from "./Todolist.module.css"
 import TasksContainer from "../Task/TasksContainer";
 import AddItemForm from "../AddItemForm/AddItemForm";
 import {createTaskTC} from "../../state/reducers/tasks-reducer";
+import EditableSpan from "../EditableSpan";
 
 type PropsType = {
     id: string
@@ -12,6 +13,7 @@ type PropsType = {
     filter: FilterType
     createTaskTC: (todolistId: string, title: string) => void
     removeTodolistTC: (todolistId: string) => void
+    changeTodolistTitleTC: (todolistId: string, title: string) => void
 }
 
 class Todolist extends Component<PropsType, any> {
@@ -22,9 +24,13 @@ class Todolist extends Component<PropsType, any> {
         const addTask = (title: string) => {
             this.props.createTaskTC(this.props.id, title)
         }
+        const changeTodolistTitle = (title: string) => {
+            this.props.changeTodolistTitleTC(this.props.id, title)
+        }
         return (
             <div className="todolist">
-                <h3>{this.props.title}
+                <h3>
+                    <EditableSpan value={this.props.title} onUpdate={changeTodolistTitle} />
                     <button onClick={deleteTodolist}>x</button>
                 </h3>
                 <AddItemForm addItem={addTask} />
@@ -39,6 +45,8 @@ class Todolist extends Component<PropsType, any> {
     }
 }
 
+// Лайвхак не создавать ф-цию mapDispatchToProps, а просто передать объект с Thunk Creates, dispatch вызовет автоматом
+
 // const mapDispatchToProps = (dispatch: AppDispatchThunkType) => {
 //     return {
 //         deleteTodolist(todolistId: string) {
@@ -47,4 +55,4 @@ class Todolist extends Component<PropsType, any> {
 //     }
 // }
 
-export default connect(null, {createTaskTC, removeTodolistTC})(Todolist);
+export default connect(null, {createTaskTC, removeTodolistTC, changeTodolistTitleTC})(Todolist);

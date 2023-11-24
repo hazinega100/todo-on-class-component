@@ -1,13 +1,13 @@
 import React, { ChangeEvent, KeyboardEvent } from 'react';
 
 interface EditableSpanProps {
-    value: string;
-    onUpdate: (newTitle: string) => void;
+    value: string
+    onUpdate: (newTitle: string) => void
 }
 
 interface EditableSpanState {
-    editMode: boolean;
-    inputText: string;
+    editMode: boolean
+    inputText: string
 }
 
 class EditableSpan extends React.Component<EditableSpanProps, EditableSpanState> {
@@ -21,28 +21,28 @@ class EditableSpan extends React.Component<EditableSpanProps, EditableSpanState>
     }
 
     handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({ inputText: e.target.value });
+        this.setState({ inputText: e.target.value })
     };
 
     handleKeyPress = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') {
-            this.saveChanges();
+            this.saveChanges()
         }
     };
 
     handleSpanClick = () => {
-        this.setState({ editMode: true });
+        this.setState({ editMode: true })
     };
 
     saveChanges = () => {
-        const { inputText } = this.state;
-        this.props.onUpdate(inputText);
-        this.setState({ editMode: false });
+        const { inputText } = this.state
+        this.props.onUpdate(inputText)
+        this.setState({ editMode: false })
     };
 
     render() {
-        const { value } = this.props;
-        const { editMode, inputText } = this.state;
+        const { value } = this.props
+        const { editMode, inputText } = this.state
 
         return (
             <div>
