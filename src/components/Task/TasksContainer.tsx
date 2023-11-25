@@ -26,17 +26,16 @@ class TasksContainer extends Component<PropsType, any> {
     componentDidMount() {
         this.props.getTasks(this.props.todolistId)
     }
-
+    removeTask = (id: string) => {
+        this.props.removeTask(this.props.todolistId, id)
+    }
+    changeTaskStatus = (id: string, status: TaskStatuses, title: string) => {
+        this.props.changeStatus(this.props.todolistId, id, status, title)
+    }
+    changeTaskTitle = (id: string, status: TaskStatuses, title: string) => {
+        this.props.changeTitle(this.props.todolistId, id, status, title)
+    }
     render() {
-        const removeTask = (id: string) => {
-            this.props.removeTask(this.props.todolistId, id)
-        }
-        const changeTaskStatus = (id: string, status: TaskStatuses, title: string) => {
-            this.props.changeStatus(this.props.todolistId, id, status, title)
-        }
-        const changeTaskTitle = (id: string, status: TaskStatuses, title: string) => {
-            this.props.changeTitle(this.props.todolistId, id, status, title)
-        }
         let tasksForTodolist = this.props.tasks[this.props.todolistId]
 
         // не забывать переприсваивать новое значение переменной tasksForTodolist =
@@ -50,9 +49,9 @@ class TasksContainer extends Component<PropsType, any> {
             <div>
                 {tasksForTodolist.map(t => <Task key={t.id}
                                                  task={t}
-                                                 removeTask={removeTask}
-                                                 changeStatus={changeTaskStatus}
-                                                 changeTaskTitle={changeTaskTitle}
+                                                 removeTask={this.removeTask}
+                                                 changeStatus={this.changeTaskStatus}
+                                                 changeTaskTitle={this.changeTaskTitle}
                 />)}
             </div>
         )
@@ -61,8 +60,7 @@ class TasksContainer extends Component<PropsType, any> {
 
 const mapStateToProps = (state: AppStoreType) => {
     return {
-        tasks: state.tasks,
-        taskStatus: state.tasks.status
+        tasks: state.tasks
     }
 }
 

@@ -4,13 +4,13 @@ import {
     changeTodolistTitleTC,
     FilterType,
     removeTodolistTC
-} from "../../state/reducers/todolist-reducer";
+} from "../../../state/reducers/todolist-reducer";
 import {connect} from "react-redux";
 import style from "./Todolist.module.css"
-import TasksContainer from "../Task/TasksContainer";
-import AddItemForm from "../AddItemForm/AddItemForm";
-import {createTaskTC} from "../../state/reducers/tasks-reducer";
-import EditableSpan from "../EditableSpan";
+import TasksContainer from "../../Task/TasksContainer";
+import AddItemForm from "../../AddItemForm/AddItemForm";
+import {createTaskTC} from "../../../state/reducers/tasks-reducer";
+import EditableSpan from "../../EditableSpan";
 
 type PropsType = {
     id: string
