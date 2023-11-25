@@ -24,7 +24,7 @@ class Todolists extends Component<PropsType, any> {
             return <Loading/>
         }
         return (
-            <div className="container">
+            <div>
                 <AddItemForm addItem={this.props.addTodolistTC}/>
                 <div className='todo_wrapper'>
                     {

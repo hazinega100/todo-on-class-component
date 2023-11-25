@@ -1,3 +1,18 @@
 .login {
+    display: flex;
+    /*justify-content: center;*/
+    align-items: center;
+    flex-direction: column;
+}
 
+.login_input {
+    margin: 7px;
+}
+
+.login_checkbox {
+
+}
+
+.login_btn {
+    background-color: lightblue;
 }
