@@ -1,5 +1,6 @@
 import {Component} from "react";
 import style from "./Login.module.css"
+import React from 'react';
 
 class Login extends Component<any, any> {
     render() {
@@ -13,9 +14,8 @@ class Login extends Component<any, any> {
                         <input className={style.login_input} type="password"/>
                     </div>
                     <div>
-                        <label htmlFor="Remember Me" >
-                            <input className={style.login_checkbox} type="checkbox"/>
-                        </label>
+                        <input className={style.login_checkbox} type="checkbox"/>
+                        <label htmlFor="checkbox" >Remember Me</label>
                     </div>
                     <div>
                         <button className={style.login_btn} type="submit">Login</button>
