@@ -115,7 +115,7 @@ export const createTaskTC = (todolistId: string, title: string) => (dispatch: Di
     tasksApi.createTask(todolistId, title)
         .then(res => {
             dispatch(createTaskAC(todolistId, res.data.data.item))
-            dispatch(setAppSuccessAC('Task added successfully'))
+            dispatch(setAppSuccessAC(['Task added successfully']))
         })
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
@@ -132,7 +132,7 @@ export const changeTaskStatusTC = (todolistId: string, taskId: string, status: T
     tasksApi.updateTask(todolistId, taskId, status, title)
         .then(res => {
             dispatch(changeTaskStatusAC(todolistId, taskId, res.data.data.item.status))
-            dispatch(setAppSuccessAC('Task change status successfully'))
+            dispatch(setAppSuccessAC(['Task change status successfully']))
         })
 }
 export const changeTaskTitleTC = (todolistId: string, taskId: string, status: TaskStatuses, title: string) => (dispatch: Dispatch) => {

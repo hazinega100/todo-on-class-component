@@ -85,7 +85,7 @@ export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
         .then(res => {
             dispatch(addTodolistAC(res.data.data.item))
             dispatch(setStatusAC('success'))
-            dispatch(setAppSuccessAC('Todolist added successfully'))
+            dispatch(setAppSuccessAC(['Todolist added successfully']))
         })
 }
 

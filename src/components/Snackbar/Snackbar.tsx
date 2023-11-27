@@ -16,8 +16,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 type PropsType = {
     error: null | string
     success: null | string
-    setAppErrorAC: (error: null | string) => void
-    setAppSuccessAC: (success: null | string) => void
+    setAppErrorAC: (error: null | string[]) => void
+    setAppSuccessAC: (success: null | string[]) => void
 }
 
 class Snackbars extends Component<PropsType , any> {

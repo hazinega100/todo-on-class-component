@@ -50,13 +50,13 @@ export const setMessagesAC = (messages: string[]) => {
         messages
     } as const
 }
-export const setAppErrorAC = (error: string | null) => {
+export const setAppErrorAC = (error: string[] | null) => {
     return {
         type: 'SET_ERROR',
         error
     } as const
 }
-export const setAppSuccessAC = (success: string | null) => {
+export const setAppSuccessAC = (success: string[] | null) => {
     return {
         type: 'SET_SUCCESS',
         success
@@ -68,8 +68,8 @@ export type StatusType = 'idle' | 'success' | 'loading' | 'error'
 export type AppReducerType = {
     status: StatusType
     messages: string[]
-    error: null | string
-    success: null | string
+    error: null | string[]
+    success: null | string[]
 }
 
 type SetStatusType = ReturnType<typeof setStatusAC>
