@@ -132,6 +132,7 @@ export const changeTaskStatusTC = (todolistId: string, taskId: string, status: T
     tasksApi.updateTask(todolistId, taskId, status, title)
         .then(res => {
             dispatch(changeTaskStatusAC(todolistId, taskId, res.data.data.item.status))
+            dispatch(setAppSuccessAC('Task change status successfully'))
         })
 }
 export const changeTaskTitleTC = (todolistId: string, taskId: string, status: TaskStatuses, title: string) => (dispatch: Dispatch) => {
