@@ -1,7 +1,7 @@
 import {Dispatch} from "redux";
 import {tasksApi} from "../../api/tasksApi";
 import {ADD_TODOLIST, AddTodolist, GET_TODOLISTS, GetTodolist} from "./todolist-reducer";
-import {setMessagesAC} from "./app-reducer";
+import {setAppErrorAC, setAppSuccessAC, setMessagesAC, setStatusAC} from "./app-reducer";
 
 const initState: TasksStateType = {}
 
@@ -106,11 +106,16 @@ export const getTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
         .then(res => {
             dispatch(getTasksAC(todolistId, res.data.items))
         })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setStatusAC('error'))
+        })
 }
 export const createTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
     tasksApi.createTask(todolistId, title)
         .then(res => {
             dispatch(createTaskAC(todolistId, res.data.data.item))
+            dispatch(setAppSuccessAC('Task added successfully'))
         })
 }
 export const removeTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch) => {
@@ -133,6 +138,10 @@ export const changeTaskTitleTC = (todolistId: string, taskId: string, status: Ta
     tasksApi.updateTask(todolistId, taskId, status, title)
         .then(res => {
             dispatch(changeTaskTitleAC(todolistId, taskId, res.data.data.item.title))
+        })
+        .catch(error => {
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setStatusAC('error'))
         })
 }
 
