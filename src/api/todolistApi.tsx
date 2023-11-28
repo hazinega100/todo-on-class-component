@@ -14,15 +14,15 @@ export const todolistApi = {
         return instance.post<ResponseType<{ item: TodolistsType }>>("todo-lists", {title: title})
     },
     deleteTodolists(todolistId: string) {
-        return instance.delete<ResponseType<{}>>(`todo-lists/${todolistId}`)
+        return instance.delete<ResponseType>(`todo-lists/${todolistId}`)
     },
     updateTodolists(todolistId: string, title: string) {
-        return instance.put<ResponseType<{}>>(`todo-lists/${todolistId}`, {title: title})
+        return instance.put<ResponseType>(`todo-lists/${todolistId}`, {title: title})
     }
 }
 
 // Types
-type ResponseType<D> = {
+export type ResponseType< D = {} > = {
     resultCode: number
     messages: string[]
     data: D

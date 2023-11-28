@@ -6,22 +6,29 @@ import {addTodolistTC, getTodolistTC, TodolistsType} from "../../state/reducers/
 import {AppStoreType} from "../../state/store";
 import {AppReducerType} from "../../state/reducers/app-reducer";
 import Loading from "../Loading";
+import {Navigate} from "react-router-dom";
 
 type PropsType = {
     todolists: TodolistsType[]
     app: AppReducerType
+    login: boolean
     getTodolistTC: () => void
     addTodolistTC: (title: string) => void
 }
 
 class Todolists extends Component<PropsType, any> {
     componentDidMount() {
-        this.props.getTodolistTC()
+        if (this.props.login) {
+            this.props.getTodolistTC()
+        }
     }
 
     render() {
         if (this.props.app.status === 'loading') {
             return <Loading/>
+        }
+        if (!this.props.login) {
+            return <Navigate to={'/login'} />
         }
         return (
             <div>
@@ -45,7 +52,8 @@ class Todolists extends Component<PropsType, any> {
 const mapStateToProps = (state: AppStoreType) => {
     return {
         todolists: state.todolist,
-        app: state.app
+        app: state.app,
+        login: state.auth.isLoggedIn
     }
 }
 

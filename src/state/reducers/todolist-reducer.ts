@@ -1,6 +1,7 @@
 import {Dispatch} from "redux";
 import {todolistApi} from "../../api/todolistApi";
 import {setAppErrorAC, setAppSuccessAC, setStatusAC} from "./app-reducer";
+import {handlerNetworkError, handlerServerError} from "../../utils/error-utils";
 
 const initState: TodolistsType[] = []
 
@@ -77,6 +78,9 @@ export const getTodolistTC = () => (dispatch: Dispatch) => {
             dispatch(getTodolistAC(res.data))
             dispatch(setStatusAC('success'))
         })
+        .catch(error => {
+            handlerNetworkError(error, dispatch)
+        })
 }
 
 export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
@@ -87,14 +91,24 @@ export const addTodolistTC = (title: string) => (dispatch: Dispatch) => {
             dispatch(setStatusAC('success'))
             dispatch(setAppSuccessAC(['Todolist added successfully']))
         })
+        .catch(error => {
+            handlerNetworkError(error, dispatch)
+        })
 }
 
 export const removeTodolistTC = (todolistId: string) => (dispatch: Dispatch) => {
     dispatch(setStatusAC('loading'))
     todolistApi.deleteTodolists(todolistId)
         .then(res => {
-            dispatch(removeTodolistAC(todolistId))
-            dispatch(setStatusAC('success'))
+            if (res.data.resultCode === 0) {
+                dispatch(removeTodolistAC(todolistId))
+                dispatch(setStatusAC('success'))
+            } else {
+                handlerServerError(res.data, dispatch)
+            }
+        })
+        .catch(error => {
+            handlerNetworkError(error, dispatch)
         })
 }
 
@@ -106,13 +120,11 @@ export const changeTodolistTitleTC = (todolistId: string, title: string) => (dis
                 dispatch(changeTodolistTitleAC(todolistId, title))
                 dispatch(setStatusAC('success'))
             } else {
-                dispatch(setAppErrorAC(res.data.messages))
-                dispatch(setStatusAC('error'))
+                handlerServerError(res.data, dispatch)
             }
         })
         .catch(error => {
-            dispatch(setAppErrorAC(error.message))
-            dispatch(setStatusAC('error'))
+            handlerNetworkError(error, dispatch)
         })
 }
 
