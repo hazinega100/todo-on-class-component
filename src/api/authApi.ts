@@ -11,8 +11,8 @@ export const authApi = {
     authMe() {
         return instance.get<ResponseType<AuthMeType>>('/auth/me')
     },
-    logout() {
-        return instance.delete(`/auth/login`)
+    logOut() {
+        return instance.delete<ResponseType>(`/auth/login`)
     },
     login(login: LoginType) {
         return instance.post<ResponseType<{ userId: number }>>(`/auth/login`,

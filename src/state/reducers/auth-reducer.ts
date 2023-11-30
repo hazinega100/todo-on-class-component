@@ -60,22 +60,6 @@ export const loginTC = (login: LoginType) => (dispatch: Dispatch) => {
         })
 }
 
-export const logOutTC = () => (dispatch: Dispatch) => {
-    dispatch(setStatusAC('loading'))
-    authApi.logout()
-        .then(res => {
-            if (res.data.resultCode === 0) {
-                dispatch(setIsLoggedIn(false))
-                dispatch(setStatusAC('success'))
-            } else {
-                handlerServerError(res.data, dispatch)
-            }
-        })
-        .catch(error => {
-            handlerNetworkError(error, dispatch)
-        })
-}
-
 export const initializeAppTC = () => (dispatch: Dispatch) => {
     dispatch(setStatusAC('loading'))
     authApi.authMe()
@@ -92,6 +76,22 @@ export const initializeAppTC = () => (dispatch: Dispatch) => {
         })
         .finally(() => {
             dispatch(setIsInitialize(true))
+        })
+}
+
+export const logOutTC = () => (dispatch: Dispatch) => {
+    dispatch(setStatusAC('loading'))
+    authApi.logOut()
+        .then(res => {
+            if (res.data.resultCode === 0) {
+                dispatch(setIsLoggedIn(false))
+                dispatch(setStatusAC('success'))
+            } else {
+                handlerServerError(res.data, dispatch)
+            }
+        })
+        .catch(error => {
+            handlerNetworkError(error, dispatch)
         })
 }
 
