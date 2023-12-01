@@ -27,7 +27,7 @@ class Header extends Component<PropsType, any> {
                     {
                         this.props.isLoggedIn
                             ?
-                            <button className={style.login_link} onClick={this.onLogOutHandler}>Logout</button>
+                            <NavLink className={style.login_link} to='/login' onClick={this.onLogOutHandler}>Logout</NavLink>
                             :
                             <NavLink className={style.login_link} to='/login'>Login</NavLink>
                     }
